@@ -1,10 +1,9 @@
-package com.sxtanna.schema.format.json;
+package com.sxtanna.schema.document;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.sxtanna.schema.format.SchemaFormat;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public final class SchemaFormatJson implements SchemaFormat
+final class SchemaDocumentJson implements SchemaDocument
 {
 
 	private static final Gson GSON = createGson();
@@ -24,7 +23,8 @@ public final class SchemaFormatJson implements SchemaFormat
 
 	private JsonElement json;
 
-	public SchemaFormatJson(@NotNull final Reader reader)
+
+	SchemaDocumentJson(@NotNull final Reader reader)
 	{
 		this.json = JsonParser.parseReader(reader);
 	}

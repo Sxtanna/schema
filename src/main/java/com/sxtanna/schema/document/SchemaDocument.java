@@ -1,6 +1,5 @@
-package com.sxtanna.schema.format;
+package com.sxtanna.schema.document;
 
-import com.sxtanna.schema.format.json.SchemaFormatJson;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,7 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
-public interface SchemaFormat
+public interface SchemaDocument
 {
 
 	<T> Optional<T> get(@NotNull final String path, @NotNull final Class<T> clazz);
@@ -29,18 +28,18 @@ public interface SchemaFormat
 
 	enum Type
 	{
-		JSON(SchemaFormatJson::new);
+		JSON(SchemaDocumentJson::new);
 
 
-		private final Function<Reader, SchemaFormat> function;
+		private final Function<Reader, SchemaDocument> function;
 
-		Type(final Function<Reader, SchemaFormat> function)
+		Type(final Function<Reader, SchemaDocument> function)
 		{
 			this.function = function;
 		}
 
 
-		public SchemaFormat get(@NotNull final Reader reader)
+		public SchemaDocument get(@NotNull final Reader reader)
 		{
 			return function.apply(reader);
 		}
