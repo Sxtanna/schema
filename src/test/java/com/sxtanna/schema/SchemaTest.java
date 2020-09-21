@@ -5,14 +5,16 @@ import com.sxtanna.schema.model.MapData;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.InputStreamReader;
+
 public final class SchemaTest implements WithAssertions
 {
 
 	@Test
 	void test_schema_get()
 	{
-		final SchemaDocument schema = Schema.loadFromResource("/data.json",
-															  SchemaDocument.Type.JSON);
+		final SchemaDocument schema = Schema.load(new InputStreamReader(Schema.class.getResourceAsStream("/data.json")),
+												  SchemaDocument.Type.JSON);
 
 		assertThat(schema.get("", MapData.class))
 				.isPresent()
@@ -30,8 +32,8 @@ public final class SchemaTest implements WithAssertions
 	@Test
 	void test_schema_set()
 	{
-		final SchemaDocument schema = Schema.loadFromResource("/data.json",
-															  SchemaDocument.Type.JSON);
+		final SchemaDocument schema = Schema.load(new InputStreamReader(Schema.class.getResourceAsStream("/data.json")),
+												  SchemaDocument.Type.JSON);
 
 		assertThat(schema.get("min.t", Integer.class)).isEmpty();
 
