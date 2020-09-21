@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Reader;
+import java.io.Writer;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -21,6 +22,9 @@ public interface SchemaFormat
 
 
 	<T> void set(@NotNull final String path, @Nullable final T data);
+
+
+	void save(@NotNull final Writer writer);
 
 
 	enum Type

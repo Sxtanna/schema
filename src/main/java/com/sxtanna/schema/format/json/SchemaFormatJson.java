@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Reader;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -107,6 +108,13 @@ public final class SchemaFormatJson implements SchemaFormat
 		}
 
 		node.getAsJsonObject().add(path.substring(period + 1), GSON.toJsonTree(data));
+	}
+
+
+	@Override
+	public void save(final @NotNull Writer writer)
+	{
+		GSON.toJson(json, writer);
 	}
 
 
