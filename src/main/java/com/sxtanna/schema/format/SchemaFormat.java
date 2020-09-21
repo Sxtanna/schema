@@ -2,6 +2,7 @@ package com.sxtanna.schema.format;
 
 import com.sxtanna.schema.format.json.SchemaFormatJson;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.Reader;
 import java.util.List;
@@ -17,6 +18,9 @@ public interface SchemaFormat
 	<T> Optional<List<T>> getList(@NotNull final String path, @NotNull final Class<T> clazz);
 
 	<K, V> Optional<Map<K, V>> getMap(@NotNull final String path, @NotNull final Class<K> clazzK, @NotNull final Class<V> clazzV);
+
+
+	<T> void set(@NotNull final String path, @Nullable final T data);
 
 
 	enum Type

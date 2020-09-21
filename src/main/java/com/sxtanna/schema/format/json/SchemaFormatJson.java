@@ -21,7 +21,7 @@ public final class SchemaFormatJson implements SchemaFormat
 	private static final Gson GSON = createGson();
 
 
-	private final JsonElement json;
+	private JsonElement json;
 
 	public SchemaFormatJson(@NotNull final Reader reader)
 	{
@@ -75,6 +75,38 @@ public final class SchemaFormatJson implements SchemaFormat
 		}
 
 		return Optional.of(hash);
+	}
+
+
+	@Override
+	public <T> void set(@NotNull final String path, @Nullable final T data)
+	{
+		if (path.trim().isEmpty())
+		{
+			json = GSON.toJsonTree(data);
+			return;
+		}
+
+		final int period = path.lastIndexOf('.');
+		if (period == -1)
+		{
+			if (!json.isJsonObject())
+			{
+				return;
+			}
+
+			json.getAsJsonObject().add(path, GSON.toJsonTree(data));
+
+			return;
+		}
+
+		final JsonElement node = findNode(path.substring(0, period));
+		if (node == null || !node.isJsonObject())
+		{
+			return;
+		}
+
+		node.getAsJsonObject().add(path.substring(period + 1), GSON.toJsonTree(data));
 	}
 
 
