@@ -31,7 +31,8 @@ final class SchemaDocumentJson implements SchemaDocument
 
 
 	@Override
-	public <T> Optional<T> get(@NotNull final String path, @NotNull final Class<T> clazz)
+	public <T> Optional<T> get(@NotNull final String path,
+							   @NotNull final Class<T> clazz)
 	{
 		return Optional.ofNullable(findNode(path))
 					   .map(node -> GSON.fromJson(node, clazz));
@@ -39,7 +40,8 @@ final class SchemaDocumentJson implements SchemaDocument
 
 
 	@Override
-	public <T> Optional<List<T>> getList(@NotNull final String path, @NotNull final Class<T> clazz)
+	public <T> Optional<List<T>> getList(@NotNull final String path,
+										 @NotNull final Class<T> clazz)
 	{
 		final JsonElement node = findNode(path);
 		if (node == null || !node.isJsonArray())
@@ -57,13 +59,16 @@ final class SchemaDocumentJson implements SchemaDocument
 
 
 	@Override
-	public <K, V> Optional<Map<K, V>> getMap(@NotNull final String path, @NotNull final Class<K> clazzK, @NotNull final Class<V> clazzV)
+	public <K, V> Optional<Map<K, V>> getMap(@NotNull final String path,
+											 @NotNull final Class<K> clazzK,
+											 @NotNull final Class<V> clazzV)
 	{
 		final JsonElement node = findNode(path);
 		if (node == null || !node.isJsonObject())
 		{
 			return Optional.empty();
 		}
+
 
 		final Map<K, V> hash = new HashMap<>();
 
@@ -80,7 +85,8 @@ final class SchemaDocumentJson implements SchemaDocument
 
 
 	@Override
-	public <T> void set(@NotNull final String path, @Nullable final T data)
+	public <T> void set(@NotNull final String path,
+						@Nullable final T data)
 	{
 		if (path.trim().isEmpty())
 		{
@@ -88,12 +94,13 @@ final class SchemaDocumentJson implements SchemaDocument
 			return;
 		}
 
+
 		final int period = path.lastIndexOf('.');
 		if (period == -1)
 		{
 			if (!json.isJsonObject())
 			{
-				return;
+				throw new IllegalArgumentException("Cannot set to '" + path + "': not an object");
 			}
 
 			json.getAsJsonObject().add(path, GSON.toJsonTree(data));
@@ -101,18 +108,20 @@ final class SchemaDocumentJson implements SchemaDocument
 			return;
 		}
 
+
 		final JsonElement node = findNode(path.substring(0, period));
 		if (node == null || !node.isJsonObject())
 		{
-			return;
+			throw new IllegalArgumentException("Cannot set to '" + path + "': not an object");
 		}
+
 
 		node.getAsJsonObject().add(path.substring(period + 1), GSON.toJsonTree(data));
 	}
 
 
 	@Override
-	public void save(final @NotNull Writer writer)
+	public void save(@NotNull final Writer writer)
 	{
 		GSON.toJson(json, writer);
 	}

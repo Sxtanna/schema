@@ -13,14 +13,21 @@ import java.util.function.Function;
 public interface SchemaDocument
 {
 
-	<T> Optional<T> get(@NotNull final String path, @NotNull final Class<T> clazz);
-
-	<T> Optional<List<T>> getList(@NotNull final String path, @NotNull final Class<T> clazz);
-
-	<K, V> Optional<Map<K, V>> getMap(@NotNull final String path, @NotNull final Class<K> clazzK, @NotNull final Class<V> clazzV);
+	<T> Optional<T> get(@NotNull final String path,
+						@NotNull final Class<T> clazz);
 
 
-	<T> void set(@NotNull final String path, @Nullable final T data);
+	<T> Optional<List<T>> getList(@NotNull final String path,
+								  @NotNull final Class<T> clazz);
+
+
+	<K, V> Optional<Map<K, V>> getMap(@NotNull final String path,
+									  @NotNull final Class<K> clazzK,
+									  @NotNull final Class<V> clazzV);
+
+
+	<T> void set(@NotNull final String path,
+				 @Nullable final T data);
 
 
 	void save(@NotNull final Writer writer);
