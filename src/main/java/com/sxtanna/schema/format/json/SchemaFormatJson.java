@@ -82,8 +82,12 @@ public final class SchemaFormatJson implements SchemaFormat
 	private JsonElement findNode(@NotNull final String path)
 	{
 		JsonElement node = json;
+		if (path.trim().isEmpty())
+		{
+			return node;
+		}
 
-		for (final String next : path.split("\\."))
+		for (final String next : path.trim().split("\\."))
 		{
 			if (node == null || !node.isJsonObject())
 			{
