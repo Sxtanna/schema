@@ -5,47 +5,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
-public final class Schema implements SchemaFormat
+public final class Schema
 {
 
-	private final SchemaFormat format;
-
-
-	private Schema(final SchemaFormat format)
+	public static SchemaFormat load(@NotNull final Reader reader, @NotNull final SchemaFormat.Type type)
 	{
-		this.format = format;
+		return type.get(reader);
 	}
 
-
-	@Override
-	public <T> Optional<T> get(@NotNull final String path, @NotNull final Class<T> clazz)
-	{
-		return format.get(path, clazz);
-	}
-
-	@Override
-	public <T> Optional<List<T>> getList(@NotNull final String path, @NotNull final Class<T> clazz)
-	{
-		return format.getList(path, clazz);
-	}
-
-	@Override
-	public <K, V> Optional<Map<K, V>> getMap(final @NotNull String path, final @NotNull Class<K> clazzK, final @NotNull Class<V> clazzV)
-	{
-		return format.getMap(path, clazzK, clazzV);
-	}
-
-
-	public static Schema load(@NotNull final Reader reader, @NotNull final SchemaFormat.Type type)
-	{
-		return new Schema(type.get(reader));
-	}
-
-	public static Schema loadFromResource(@NotNull final String path, @NotNull final SchemaFormat.Type type)
+	public static SchemaFormat loadFromResource(@NotNull final String path, @NotNull final SchemaFormat.Type type)
 	{
 		return load(new InputStreamReader(Schema.class.getResourceAsStream(path)), type);
 	}
